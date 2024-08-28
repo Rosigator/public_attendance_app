@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  nextjs:
+    build:
+      context: ./NextJS
+      target: dev
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./NextJS:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - "3000:3000"
+    networks:
+      - common_network
+
+  db:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=myplantcollection
+    volumes:
+      - postgres_volume:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - common_network
+
+networks:
+  common_network:
+    driver: bridge
+
+volumes:
+  nextjs_volume:
+  postgres_volume:
