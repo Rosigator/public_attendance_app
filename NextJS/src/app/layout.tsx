@@ -6,8 +6,8 @@ import styles from './RootLayout.module.scss';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "My Plant Collection",
-  description: "The website for Plant Collectors",
+  title: "Next Auth Tests",
+  description: "Website for testing Auth in NextJS",
 };
 
 type RootLayoutProps = Readonly<{ children: React.ReactNode }>
