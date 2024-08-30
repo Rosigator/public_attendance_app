@@ -1,0 +1,15 @@
+{
+  "name": "next_auth_test",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "un repositorio para probar diferentes métodos de autentificación en nextjs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rosigator/NextJS-PG-REDIS-Docker"
+  },
+  "scripts": {
+    "secret": "node generateJWTSecret.js"
+  },
+  "author": "Héctor Castro",
+  "license": "ISC"
+}

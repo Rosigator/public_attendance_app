@@ -2,6 +2,7 @@
 
 # dependencies
 /NextJS/node_modules
+node_modules
 /NextJS/**/.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -27,6 +28,7 @@ yarn-error.log*
 
 # Env files
 /NextJS/.env*
+!/NextJS/.env.example
 .env
 
 # vercel
