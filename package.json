@@ -1,11 +1,11 @@
 {
-  "name": "next_auth_test",
+  "name": "sae_attendance",
   "version": "1.0.0",
   "type": "module",
-  "description": "un repositorio para probar diferentes métodos de autentificación en nextjs",
+  "description": "Aplicación para el control horario de SAE-Innova",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Rosigator/NextJS-PG-REDIS-Docker"
+    "url": "git@github.com:SAE-Esferico2/sae_attendance.git"
   },
   "scripts": {
     "secret": "node generateJWTSecret.js"

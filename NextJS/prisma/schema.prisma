@@ -13,23 +13,70 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Company {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  cif  String @unique
+}
+
 model User {
-  id      String   @id @default(cuid())
-  email   String   @unique
-  name    String
-  role    Role     @relation(fields: [roleId], references: [id])
-  roleId  Int      @unique
-  profile Profile?
+  id                String       @id @default(cuid())
+  email             String       @unique
+  name              String
+  surname           String
+  slug              String       @unique
+  identity_document String       @unique
+  roleId            Int
+  active            Boolean
+  image_url         String
+  role              Role         @relation(fields: [roleId], references: [id])
+  profile           Profile?
+  sessions          Session[]
+  attendances       Attendance[]
+
+  @@map("users")
+}
+
+model Attendance {
+  id               Int          @id @default(autoincrement())
+  user_id          String
+  check_in         DateTime[]
+  check_out        DateTime[]
+  worker_status_id Int
+  user             User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  worker_status    WorkerStatus @relation(fields: [worker_status_id], references: [id])
+
+  @@map("attendances")
+}
+
+model WorkerStatus {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  attendance Attendance[]
+
+  @@map("worker_statuses")
 }
 
 model Role {
   id   Int    @id
-  name String
-  User User[]
+  name String @unique
+  user User[]
+
+  @@map("roles")
 }
 
 model Profile {
-  id     Int    @id @default(autoincrement())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String @unique
+  user_id String @id
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Session {
+  userId String @id
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token  String
+  device String
+
+  @@map("sessions")
 }
