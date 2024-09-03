@@ -17,6 +17,9 @@ model Company {
   id   Int    @id @default(autoincrement())
   name String @unique
   cif  String @unique
+  User User[]
+
+  @@map("companies")
 }
 
 model User {
@@ -26,10 +29,12 @@ model User {
   surname           String
   slug              String       @unique
   identity_document String       @unique
-  roleId            Int
+  company_id        Int
+  role_id           Int
   active            Boolean
   image_url         String
-  role              Role         @relation(fields: [roleId], references: [id])
+  company           Company      @relation(fields: [company_id], references: [id])
+  role              Role         @relation(fields: [role_id], references: [id])
   profile           Profile?
   sessions          Session[]
   attendances       Attendance[]
