@@ -9,8 +9,10 @@
     "lint": "next lint",
     "migrate": "npx prisma migrate dev",
     "seed": "tsx prisma/seeds/seed.ts",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test:front": "jest --config=jest.front.config.ts",
+    "test:watch:front": "jest --watch --config=jest.front.config.ts",
+    "test:back": "jest --config=jest.back.config.ts",
+    "test:watch:back": "jest --watch --config=jest.back.config.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.16.2",
@@ -35,6 +37,8 @@
     "eslint-config-next": "14.2.5",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "next-test-api-route-handler": "^4.0.8",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }
