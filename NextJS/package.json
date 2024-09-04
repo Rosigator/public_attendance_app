@@ -7,25 +7,27 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate": "npx prisma migrate dev",
-    "seed": "tsx prisma/seeds/seed.ts",
-    "test:front": "jest --config=jest.front.config.ts",
-    "test:watch:front": "jest --watch --config=jest.front.config.ts",
-    "test:back": "jest --config=jest.back.config.ts",
-    "test:watch:back": "jest --watch --config=jest.back.config.ts"
+    "migrate:production": "npx prisma migrate dev",
+    "migrate:tests": "DATABASE_URL=postgresql://postgres:password@localhost:5432/SAEAttendance?schema=tests npx prisma migrate dev",
+    "seed:production": "tsx prisma/seeds/seed.ts",
+    "seed:test": "NODE_ENV=test prisma/seeds/seed.ts",
+    "test:front": "NODE_ENV=test jest --config=jest.front.config.ts",
+    "test:watch:front": "NODE_ENV=test jest --watch --config=jest.front.config.ts",
+    "test:back": "NODE_ENV=test jest --config=jest.back.config.ts",
+    "test:watch:back": "NODE_ENV=test jest --watch --config=jest.back.config.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.16.2",
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "next": "14.2.5",
-    "prisma": "^5.19.0",
     "react": "^18",
     "react-dom": "^18",
     "sass": "^1.77.7",
     "sharp": "^0.33.4"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.1",
@@ -39,6 +41,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-environment-node": "^29.7.0",
     "next-test-api-route-handler": "^4.0.8",
+    "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
     "typescript": "^5"
   }

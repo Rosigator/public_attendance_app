@@ -14,41 +14,59 @@ datasource db {
 }
 
 model Company {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  cif  String @unique
-  User User[]
+  id   Int       @id @default(autoincrement())
+  name String    @unique
+  cif  String    @unique
+  User Profile[]
 
   @@map("companies")
 }
 
 model User {
-  id                String       @id @default(cuid())
-  email             String       @unique
+  id       String    @id @default(cuid())
+  email    String    @unique
+  role_id  Int
+  role     Role      @relation(fields: [role_id], references: [id])
+  profile  Profile?
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Profile {
+  user_id           String       @id
   name              String
   surname           String
   slug              String       @unique
-  identity_document String       @unique
-  company_id        Int
-  role_id           Int
+  slug_number       Int
   active            Boolean
   image_url         String
+  identity_document String       @unique
+  company_id        Int
+  user              User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
   company           Company      @relation(fields: [company_id], references: [id])
-  role              Role         @relation(fields: [role_id], references: [id])
-  profile           Profile?
-  sessions          Session[]
   attendances       Attendance[]
+  teams             Team[]
 
-  @@map("users")
+  @@map("profiles")
+}
+
+model Team {
+  id       Int       @id @default(autoincrement())
+  name     String    @unique
+  members  Profile[]
+  policies Policy[]
+
+  @@map("teams")
 }
 
 model Attendance {
   id               Int          @id @default(autoincrement())
   user_id          String
-  check_in         DateTime[]
-  check_out        DateTime[]
+  check_in         DateTime
+  check_out        DateTime?
   worker_status_id Int
-  user             User         @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  profile          Profile      @relation(fields: [user_id], references: [user_id], onDelete: Cascade)
   worker_status    WorkerStatus @relation(fields: [worker_status_id], references: [id])
 
   @@map("attendances")
@@ -63,25 +81,40 @@ model WorkerStatus {
 }
 
 model Role {
-  id   Int    @id
-  name String @unique
-  user User[]
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  user   User[]
+  Policy Policy[]
 
   @@map("roles")
 }
 
-model Profile {
-  user_id String @id
-  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model Permission {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  policies Policy[]
 
-  @@map("profiles")
+  @@map("permissions")
+}
+
+model Policy {
+  id            Int        @id @default(autoincrement())
+  role_id       Int
+  team_id       Int
+  permission_id Int
+  role          Role       @relation(fields: [role_id], references: [id], onDelete: Cascade)
+  team          Team       @relation(fields: [team_id], references: [id], onDelete: Cascade)
+  permission    Permission @relation(fields: [permission_id], references: [id], onDelete: Cascade)
+
+  @@unique([role_id, team_id, permission_id])
+  @@map("policies")
 }
 
 model Session {
-  userId String @id
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token  String
-  device String
+  user_id String @id
+  user    User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  token   String
+  device  String
 
   @@map("sessions")
 }
